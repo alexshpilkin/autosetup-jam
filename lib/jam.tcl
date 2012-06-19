@@ -44,7 +44,7 @@ proc make-jam-config {fileName {autoJam auto.jam}} {
     array set deps {}
 
     # process and include autosetup/*.jam
-    foreach module [lsort [array names ::libmodule]] {
+    foreach module [lsort [concat autosetup [array names ::libmodule]]] {
         set jamFile [file join $::autosetup(libdir) $module.jam]
         if {![file exists $jamFile]} {
             continue
