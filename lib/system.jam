@@ -1,0 +1,10 @@
+# Copyright (C) 2012 Alexander Shpilkin
+
+# system.jam
+#
+# Jam support for settings from 'system.tcl'. Includes cross-compilation
+# prefixes and installation directories.
+
+# AutoSetup : HOST=host BUILD=build CROSS=cross WINDOWS=windows SUFEXE=EXEEXT
+# AutoSetup : prefix exec_prefix datadir sysconfdir sharedstatedir localstatedir
+# AutoSetup : infodir mandir includedir

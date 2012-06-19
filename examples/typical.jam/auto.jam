@@ -1,0 +1,3 @@
+AutoGen config.h ;
+HDRS    += $(BUILD_TOP) ;
+DEFINES += _GNU_SOURCE ;

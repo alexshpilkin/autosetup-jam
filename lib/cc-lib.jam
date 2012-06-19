@@ -1,0 +1,11 @@
+# Copyright (C) 2012 Alexander Shpilkin
+
+# cc-lib.jam
+#
+# Jam support for settings from 'cc-lib.tcl'.
+
+# AutoSetup : CONFIG_FILE_OFFSET_BITS=_FILE_OFFSET_BITS
+if $(CONFIG_FILE_OFFSET_BITS)
+{
+    DEFINES += _FILE_OFFSET_BITS=$(CONFIG_FILE_OFFSET_BITS) ;
+}

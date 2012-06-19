@@ -1,0 +1,8 @@
+- Proper GNU-compatible installation support using directories system.tcl +
+  $DESTDIR?
+
+- Pkg-config support? The FreeType.org Jambase has some experimental rules for
+  this, but they will most likely have to be modified if (when) autosetup
+  supports pkg-config natively.
+
+- Bloat: dummy automake-compatible targets?

@@ -1,0 +1,19 @@
+# Copyright (C) 2012 Alexander Shpilkin
+
+# cc.jam
+#
+# Jam support for settings from 'cc.tcl'. Includes any programs that were
+# detected using 'cc-check-progs' and compiler flags.
+
+# AutoSetup : AS CC C++=CXX DC CHMOD CHOWN RM CP FORTRAN=F77 LINK=CC LN LEX MV
+# AutoSetup : RANLIB MKDIR AWK YACC TCLSH
+# AutoSetup : CCFLAGS=CFLAGS C++FLAGS=CXXFLAGS FORTRANFLAGS=F77FLAGS
+# AutoSetup : LINKFLAGS=LDFLAGS LINKLIBS=LIBS
+
+OPTIM = ; # Specified via CFLAGS instead
+
+# AutoSetup : AUTOSETUP_AR=AR
+if $(AUTOSETUP_AR)
+{
+    AR = "$(AUTOSETUP_AR) ru" ;
+}

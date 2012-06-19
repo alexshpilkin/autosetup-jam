@@ -1,0 +1,74 @@
+# Copyright (C) 2012 Alexander Shpilkin
+
+# cc-shared.jam
+#
+# Override Jambase definitions to use settings from 'cc-shared.tcl'
+# (the UNIX rules there are broken anyway).
+
+SUFOBJSHR = ".dyn-o" ;
+
+# AutoSetup : SUFLIBVER=SH_SOEXTVER
+SUFLIBPAT = [ Match "^(.*)%s(.*)$" : $(SUFLIBVER) ] ;
+
+rule FSharedObjectName
+{
+    # AutoSetup : VERSION
+    local _ver = [ on $(<) Match "^([0-9]*)" : $(VERSION) ] ;
+    if $(SUFLIBPAT) && $(_ver)
+    {
+        return [ FAppendSuffix $(<) : $(SUFLIBPAT:J=$(_ver)) ] ;
+    }
+    else
+    {
+        return [ FAppendSuffix $(<) : $(SUFLIBSHR) ] ;
+    }
+}
+
+rule SharedObjects
+{
+    local SUFOBJ = $(SUFOBJSHR) ;
+    Objects $(<) ;
+    # AutoSetup : SHCCFLAGS=SH_CFLAGS
+    ObjectCcFlags $(<) : $(SHCCFLAGS) ;
+}
+
+rule SharedLibraryFromObjects
+{
+    local _l _s ;
+
+    _s = [ FGristFiles $(>) ] ;
+    # AutoSetup : SUFLIBSHR=SH_SOEXT
+    _l = $(<:S=$(SUFLIBSHR)) ;
+
+    Depends lib   : $(_l) ;
+    Clean   clean : $(_l) ;
+
+    MakeLocate   $(_l) : $(LOCATE_TARGET) ;
+    Depends      $(_l) : $(_s) ;
+    Link         $(_l) : $(_s) ;
+
+    # AutoSetup : SHLINKFLAGS=SH_LDFLAGS
+    LINKFLAGS on $(_l) += $(SHLINKFLAGS) ;
+    # AutoSetup : SONAMEFLAG=SH_SOPREFIX
+    if $(SONAMEFLAG)
+    {
+        local _soname = [ FSharedObjectName $(<) ] ;
+        LINKFLAGS on $(_l) += $(SONAMEFLAG)$(_soname) ;
+    }
+}
+
+rule LinkSharedLibraries
+{
+    local _t = [ FAppendSuffix $(<) : $(SUFEXE) ] ;
+
+    # AutoSetup : SUFLIBSHR=SH_SOEXT
+    Depends      $(_t) :  $(>:S=$(SUFLIBSHR)) ;
+    LINKLIBS  on $(_t) += $(>:S=$(SUFLIBSHR)) ;
+    # AutoSetup : SHEXEFLAGS=SH_LINKFLAGS
+    LINKFLAGS on $(_t) += $(SHEXEFLAGS) ;
+}
+
+rule LibToolFind
+{
+    Exit "this can't happen: LibToolFind invoked" ;
+}

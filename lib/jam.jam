@@ -1,0 +1,43 @@
+# Copyright (C) 2012 Alexander Shpilkin
+
+# jam.jam
+#
+# Core 'autosetup'-related definitions. Includes support for out-of-tree builds
+# and additional automake-compatible targets ('reconfig', 'distclean').
+
+BUILD_TOP ?= $(TOP) ;
+
+# Fix build directory for out-of-tree builds
+
+SUBDIRRULES += SubDirOutOfTree ;
+rule SubDirOutOfTree
+{
+    LOCATE_TARGET = [ FDirName $(BUILD_TOP) $(SUBDIR_TOKENS) ] ;
+}
+
+# Define a 'distclean' target
+
+Always  distclean ;
+NotFile distclean ;
+Depends distclean : clean ;
+
+rule AutoGen
+{
+    LOCATE on $(<) = $(BUILD_TOP) ;
+    Clean distclean : $(<) ;
+}
+
+AutoGen Jamconfig config.log ;
+
+# Define a 'reconfig' target
+
+actions ReConfig
+{
+    # AutoSetup : RECONFIG=AUTOREMAKE
+    $(RECONFIG)
+}
+
+Always   reconfig ;
+NotFile  reconfig ;
+Depends  reconfig : distclean ;
+ReConfig reconfig ;

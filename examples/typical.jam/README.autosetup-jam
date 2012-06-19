@@ -1,0 +1,9 @@
+Tue 19 Jun 2012 05:25:40 MSK
+----------------------------
+
+This is a port of the 'typical' example from autosetup. Static and shared
+library builds are supported, as are out-of-tree ones. Installation (TODO)
+and automatic reconfiguration are not supported. Note that auto.def is only
+modified to generate Jam files instead of Makefiles.
+
+Run: autosetup --install && ./configure && jam

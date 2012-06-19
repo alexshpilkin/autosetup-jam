@@ -1,0 +1,16 @@
+SubDir       TOP  ;
+SubDirHdrs $(TOP) ;
+
+Main app : main.c ;
+
+# AutoSetup : shared VERSION=PACKAGE_VERSION
+if $(shared)
+{
+    LinkSharedLibraries app : libtest ;
+    SharedLibrary libtest : funcs.c ;
+}
+else
+{
+    LinkLibraries app : libtest ;
+    Library libtest : funcs.c ;
+}
